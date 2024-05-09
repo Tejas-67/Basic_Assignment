@@ -29,9 +29,13 @@ class HomeScreenViewModel @Inject constructor(): ViewModel() {
     var state by mutableStateOf(
         HomeScreenState()
     )
+    var videoDetails by mutableStateOf<VideoDetails?>(
+        null
+    )
     private var actualData by mutableStateOf(
         listOf<VideoDetails>()
     )
+    val allVideos get() = actualData
     var searchText by mutableStateOf("")
 
     private var searchJob: Job? = null

@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,8 @@ import com.tejas.basic_assignment.model.VideoDetails
 
 @Composable
 fun VideoItem(
-    item: VideoDetails
+    item: VideoDetails,
+    onClick: (VideoDetails) -> Unit
 ){
     var image by remember {mutableStateOf<Drawable?>(null)}
     var creatorAvatar by remember { mutableStateOf<Drawable?>(null) }
@@ -67,6 +69,7 @@ fun VideoItem(
     Box(
         modifier = Modifier.fillMaxWidth()
             .background(color = Color.Black)
+            .clickable{ onClick(item) }
     ){
         Column(
             modifier = Modifier

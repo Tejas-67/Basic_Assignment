@@ -81,6 +81,10 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.2-alpha")
 
+    //http
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+
+    //exoplayer
+    implementation("com.google.android.exoplayer:exoplayer:2.15.1")
 }
