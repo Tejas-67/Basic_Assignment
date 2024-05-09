@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tejas.basic_assignment.model.VideoDetails
@@ -15,7 +16,10 @@ import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.time.Duration
 
@@ -25,6 +29,43 @@ class HomeScreenViewModel @Inject constructor(): ViewModel() {
     var state by mutableStateOf(
         HomeScreenState()
     )
+    private var actualData by mutableStateOf(
+        listOf<VideoDetails>()
+    )
+    var searchText by mutableStateOf("")
+
+    private var searchJob: Job? = null
+    fun search(query: String){
+        searchText = query
+        _search()
+    }
+    private fun _search(){
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch{
+            delay(500)
+            filterResults()
+        }
+    }
+
+    private fun filterResults(){
+        if(searchText==""){
+            state = state.copy(videoInfos = actualData)
+            return
+        }
+        val filteredList = actualData.filter{
+            it.title.lowercase().contains(searchText.lowercase()) ||
+                    it.creator_name.lowercase().contains(searchText.lowercase())
+        }
+        if(filteredList.isEmpty()) {
+            state = state.copy(videoInfos = listOf())
+            return
+        }
+        state = state.copy(
+            videoInfos = filteredList,
+            isLoading = false
+        )
+        Log.w("search", "$searchText: $filteredList")
+    }
 
     private var supabase: SupabaseClient = createSupabaseClient(
         supabaseUrl =  "https://evtqpwlufaaskddbjypw.supabase.co",
@@ -39,14 +80,15 @@ class HomeScreenViewModel @Inject constructor(): ViewModel() {
     }
 
     private fun _getVideoDetails(){
-        state = state.copy(isLoading = false)
+        if(state.videoInfos.isNotEmpty()) return
         viewModelScope.launch{
             val result = supabase.from("videos_basicAssignment")
                 .select()
             Log.w("supabase", "data: ${result.data}")
             val data = result.decodeList<VideoDetails>()
+            state = state.copy(isLoading = false, videoInfos = data)
+            actualData = data
             Log.w("supabase", data.toString())
-            state = state.copy(videoInfos = data, isLoading = false)
         }
     }
 }
