@@ -46,8 +46,8 @@ fun VideoItem(
     onClick: (VideoDetails) -> Unit
 ){
     var image by remember {mutableStateOf<Drawable?>(null)}
-    var creatorAvatar by remember { mutableStateOf<Drawable?>(null) }
     val context = LocalContext.current
+    var creatorAvatar by remember { mutableStateOf<Drawable?>(null) }
     Glide.with(context)
         .load(item.creator_avatar_url)
         .into(object: CustomTarget<Drawable>(){
