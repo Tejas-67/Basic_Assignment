@@ -7,7 +7,7 @@ Native Android App built with Jetpack Compose, Ktor Client, Exoplayer and Supaba
 ## Tech Stack Used
 * Kotlin
 * jetpack Compose
-* Kotlin
+* Ktor
 * PostgreSQL
 * Supabase
 * MVVM
