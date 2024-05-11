@@ -5,17 +5,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +35,8 @@ fun HomeScreen(
     val refreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isLoading)
     viewModel.getVideoDetails()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = Color.Black)
     ){
         OutlinedTextField(
@@ -42,12 +46,25 @@ fun HomeScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .height(50.dp),
             placeholder = {
-                Text(text = "Search....")
+                Text(
+                    text = "Search for creator/title",
+                    color = Color.White
+                )
             },
             maxLines = 1,
-            singleLine = true
+            singleLine = true,
+            textStyle = TextStyle(color = Color.White),
+            shape = RoundedCornerShape(24.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.White,
+                focusedContainerColor = Color.DarkGray,
+                unfocusedContainerColor = Color.DarkGray,
+                cursorColor = Color.White
+            )
         )
         SwipeRefresh(
             state = refreshState,
@@ -55,7 +72,6 @@ fun HomeScreen(
                 viewModel.getVideoDetails()
             }
         ) {
-            var count = 0
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ){

@@ -75,7 +75,7 @@ fun UpcomingVideoItem(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 16.sp,
-                style = TextStyle(fontWeight = FontWeight.Bold),
+                style = TextStyle(fontWeight = FontWeight.SemiBold),
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
