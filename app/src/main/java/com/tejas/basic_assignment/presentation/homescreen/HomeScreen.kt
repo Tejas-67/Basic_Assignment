@@ -5,17 +5,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,22 +36,37 @@ fun HomeScreen(
     val refreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isLoading)
     viewModel.getVideoDetails()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = Color.Black)
     ){
-        OutlinedTextField(
+        TextField(
             value = viewModel.searchText,
             onValueChange = {
                             viewModel.search(it)
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .height(50.dp),
             placeholder = {
-                Text(text = "Search....")
+                Text(
+                    modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+                    text = "Search....",
+                    color = Color.Gray
+                )
             },
             maxLines = 1,
-            singleLine = true
+            singleLine = true,
+            shape = RoundedCornerShape(24.dp),
+            textStyle = TextStyle(color = Color.White),
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.DarkGray,
+                focusedContainerColor = Color.DarkGray,
+                cursorColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
         )
         SwipeRefresh(
             state = refreshState,
@@ -77,7 +96,7 @@ fun HomeScreen(
 @Composable
 @Preview
 fun onlyPreview(){
-    OutlinedTextField(
+    TextField(
         value = "Kuch search karo",
         onValueChange = {
         },
@@ -89,6 +108,7 @@ fun onlyPreview(){
         },
         maxLines = 1,
         singleLine = true,
-        shape = RoundedCornerShape(24.dp)
+        shape = RoundedCornerShape(24.dp),
+
     )
 }
